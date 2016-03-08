@@ -10,6 +10,18 @@ g_https_proxy=https://10.110.15.60:8080
 function all_proxy(){
     apt_proxy
     wget_proxy
+    git_proxy
+}
+
+# Usage:
+#  . ./proxy_utility.sh
+#  no_proxy
+# Test:
+#  apt-get update
+function no_proxy(){
+    apt_noproxy
+    wget_noproxy
+    git_noproxy
 }
 
 # Usage:
@@ -31,16 +43,6 @@ function apt_noproxy(){
     else
        echo "apt_noproxy: apt_proxy had been removed!"
     fi
-}
-
-# Usage:
-#  . ./proxy_utility.sh
-#  no_proxy
-# Test:
-#  apt-get update
-function no_proxy(){
-    apt_noproxy
-    wget_noproxy
 }
 
 # Usage:
