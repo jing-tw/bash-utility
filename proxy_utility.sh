@@ -31,8 +31,8 @@ function no_proxy(){
 #  apt-get update
 function apt_proxy(){
     local file=/etc/apt/apt.conf.d/01proxy
-    echo "Acquire::http::Proxy \"http://10.110.15.60:8080\";" | sudo tee -a ${file}
-    echo "Acquire::https::Proxy \"https://10.110.15.60:8080\";" | sudo tee -a ${file}
+    echo "Acquire::http::Proxy \"${g_http_proxy}\";" | sudo tee -a ${file}
+    echo "Acquire::https::Proxy \"${g_https_proxy}\";" | sudo tee -a ${file}
 }
 
 function apt_noproxy(){
@@ -50,7 +50,8 @@ function apt_noproxy(){
 # Test:
 #  wget http://www.kimo.com.tw
 function wget_proxy(){
-    local file=/etc/wgetrc
+    #local file=/etc/wgetrc
+    local file=~/.wgetrc
     # uncomment user_proxy
     sudo sed -i '/use_proxy/s/^#//g' ${file}
     sudo sed -i 's#^.*\bhttp_proxy\b.*$#http_proxy=http://10.110.15.60:8080#g' ${file}
@@ -58,7 +59,8 @@ function wget_proxy(){
 }
 
 function wget_noproxy(){
-    local file=/etc/wgetrc
+    #local file=/etc/wgetrc
+    local file=~/.wgetrc
     sudo sed -i '/use_proxy/s/^/#/g' ${file}
     sudo sed -i '/http_proxy/s/^/#/g' ${file}   
     sudo sed -i '/https_proxy/s/^/#/g' ${file}
