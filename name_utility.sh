@@ -6,6 +6,24 @@
 # PATH TO YOUR HOSTS FILE
 ETC_HOSTS=/etc/hosts
 
+# Function: changehostname
+# Usage
+#    changehostname vm2_test
+# Return
+#    0: Success
+#    1: Fail
+function changehostname() {
+    local file=/etc/hostname
+    local newhostname=$1
+
+    if [ -z "$newhostname" ]; then
+        echo "Usage: changehostname HOSTNAME"
+        return 1
+    fi
+    # sudo -- sh -c -e "echo '$newhostname' > ${file}";
+    echo "$newhostname" | sudo tee ${file}
+    sudo hostname ${newhostname}
+}
 
 # Function: removehost
 # Usage:
