@@ -132,8 +132,19 @@ function wget_checkproxy_test(){
     };fi
 }
     
+function git_install(){
+    local package=git
+    sudo dpkg -l $package > /dev/null 2>&1
+    if [ $? == '0' ]; then
+        echo "You have git"
+    else
+        echo "You have no git, automatically install it"
+        sudo apt-get install git
+    fi
+}
 
 function git_proxy(){
+    
     git config --global http.proxy ${g_http_proxy}
     git config --global https.proxy ${g_https_proxy}
 
