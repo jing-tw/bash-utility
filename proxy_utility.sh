@@ -139,15 +139,15 @@ function git_install(){
         echo "You have git"
     else
         echo "You have no git, automatically install it"
-        sudo apt-get install git
+        sudo apt-get --yes --force-yes install git
     fi
 }
 
 function git_proxy(){
-    
+    git_install
+
     git config --global http.proxy ${g_http_proxy}
     git config --global https.proxy ${g_https_proxy}
-
     git_status
 
     echo "git_proxy:: git proxy has been setup."
@@ -156,7 +156,6 @@ function git_proxy(){
 function git_noproxy(){
     git config --global --unset http.proxy
     git config --global --unset https.proxy
- 
     git_status
 
     echo "git_noproxy:: git proxy has been disabled."
