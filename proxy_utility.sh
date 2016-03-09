@@ -1,3 +1,5 @@
+git_global_user=jing-tw
+git_global_user_email=mqjing@gmail.com
 g_http_proxy=http://10.110.15.60:8080
 g_https_proxy=https://10.110.15.60:8080
 
@@ -143,6 +145,9 @@ function git_install(){
     else
         echo "You have no git, automatically install it"
         sudo apt-get --yes --force-yes install git
+
+        git config --global user.name ${git_global_user} # jing-tw
+        git config --global user.email ${git_global_user_email} #"mqjing@gmail.com"
     fi
 }
 
