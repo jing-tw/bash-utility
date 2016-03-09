@@ -1,6 +1,9 @@
 g_http_proxy=http://10.110.15.60:8080
 g_https_proxy=https://10.110.15.60:8080
 
+sudo locale-gen en_US en_US.UTF-8 zh_TW zh_TW.UTF-8
+sudo dpkg-reconfigure locales
+
 # Usage:
 # . ./proxy_utility.sh
 # all_proxy
