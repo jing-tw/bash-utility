@@ -56,6 +56,18 @@ function wget_proxy(){
     #local file=/etc/wgetrc
     local file=~/.wgetrc
 
+    # check if the file exist
+    if [ -f ${file} ]
+    then
+       echo "Found ${file}"
+    else
+       echo "Create a new ${file}"
+       touch ${file}
+       echo "use_proxy=on" | tee -a ${file}
+       echo "http_proxy=${g_http_proxy}" | tee -a ${file}
+       echo "https_proxy=${g_https_proxy}" | tee -a ${file}
+    fi
+
     wget_checkproxy
     if [ $? == 0 ]; then {
        echo "wget_proxy::wget proxy has already enabled"
