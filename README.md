@@ -1,8 +1,9 @@
 # bash-utility
 
-## setup proxy
-- . ./proxy_utility.sh
-- all_proxy
+### Setup Proxy
+1. ./proxy_utility.sh
+2. all_proxy
 - 
-## remove proxy
-- no_proxy
+### Remove Proxy
+1. ./proxy_utility.sh
+2. no_proxy
