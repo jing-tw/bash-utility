@@ -1,7 +1,7 @@
 # bash-utility
 
 ### Setup Proxy
-1. ./proxy_utility.sh
+1. source proxy_utility.sh
 2. all_proxy
 - 
 ### Remove Proxy
