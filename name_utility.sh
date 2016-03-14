@@ -97,11 +97,11 @@ function valid_hostname_test(){
 
 # Function: removehost
 # Usage:
-#   removehost vm4
+#   remove_host vm4
 # Return:
 #   0: success
 #   1: fail
-function removehost() {
+function remove_host() {
     local HOSTNAME=$1
     if [ -z "$HOSTNAME" ]; then
         echo "Usage: removehost HOSTNAME"
@@ -119,14 +119,31 @@ function removehost() {
     fi
 }
 
+function add_host_array(){
+    HostNameArray=$1
+    IPArray=$2
+
+    for (( i=0; i<${#HostNameArray[@]}; i++)); do
+       echo ${HostNameArray[i]} ${IPArray[i]} 
+       add_host ${HostNameArray[i]} ${IPArray[i]} 
+    done
+}
+
+function add_host_array_test(){
+    HostNameArray=(vm1 vm2 vm3)
+    IPArray=("10.109.62.118" "10.109.62.124" "10.109.62.138")
+ 
+    add_host_array $HostNameArray $IPArray
+}
+
 # Function: addhost
 # Usage:
 #   . ./ip_utility.sh
-#   addhost vm4 10.109.62.233
+#   add_host vm4 10.109.62.233
 # Return:
 #   0: success
 #   1: fail
-function addhost() {
+function add_host() {
     HOSTNAME=$1
     IP=$2
    
