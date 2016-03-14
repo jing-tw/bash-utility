@@ -11,10 +11,17 @@
 
 ## Setup Hostname
 1. Local Change Hostname
-    - source name_utility.sh
+    - source name_utility.sh; source ip_utility.sh
     - change_hostname abc
 2. Remote Change Hostname
     - ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);change_hostname abc"
+
+## Name Resolving (/etc/hosts)
+1. Local Add Host
+    - source ip_utility.sh
+    - add_host vm 192.168.62.183
+2. Remote Add Host
+    - ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);add_host vm 192.168.62.183"
 
 ### Puppet Maseter Ready
 1. source puppet_utility.sh
