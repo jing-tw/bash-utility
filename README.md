@@ -31,7 +31,15 @@ ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);change_host
 ```
 2. Remote Add Host
 ``` bash    
-ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);add_host vm 192.168.62.183"
+ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);add_host vm1 192.168.62.183"
+```
+
+3. Remote Add Host (Array)
+``` bash
+HostNameArray=(vm1 vm2 vm3)
+IPArray=("10.109.62.118" "10.109.62.124" "10.109.62.138")
+
+add_host_array $HostNameArray $IPArray
 ```
 
 ### Puppet Maseter Ready
