@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Library
-. ./ip_utility.sh
+#. ./ip_utility.sh
 
 # PATH TO YOUR HOSTS FILE
 ETC_HOSTS=/etc/hosts
@@ -13,17 +13,87 @@ ETC_HOSTS=/etc/hosts
 #    0: Success
 #    1: Fail
 function changehostname() {
-    local file=/etc/hostname
+    local hostname_file=/etc/hostname
+    local hosts_file=/etc/hosts
     local newhostname=$1
 
     if [ -z "$newhostname" ]; then
         echo "Usage: changehostname HOSTNAME"
         return 1
     fi
-    # sudo -- sh -c -e "echo '$newhostname' > ${file}";
-    echo "$newhostname" | sudo tee ${file}
+   
+    # check hostname
+    valid_hostname $newhostname
+    if [[ $? -eq 1 ]]; then
+        #echo "Invalid hostname: $newhostname"
+        return 1
+    fi
+
+    # update /etc/hostname
+    # sudo -- sh -c -e "echo '$newhostname' > ${hostname_file}";
+    echo "$newhostname" | sudo tee ${hostname_file}
+
+    # update /etc/hosts
+    sudo sed -i "s#^.*\b127.0.1.1\b.*\$#127.0.1.1\t${newhostname}#g" ${hosts_file}
+
+    # update the machine hostname
+    echo "Change name: $HOSTNAME -> $newhostname"
     sudo hostname ${newhostname}
+
+    #sudo hostnamectl set-hostname $newhostname
 }
+
+#Function valid_hostanme
+# Usage:
+#    valid_hostname abc_123
+#    if [[ $? -eq 0 ]]; then
+#      echo  valid_hostname_test::OK
+#    else
+#       echo valid_hostname_test::Error
+#    fi
+# Return
+#   0: valid
+#   1: invalid
+function valid_hostname(){
+    local name=$1
+
+    LC_CTYPE="C"
+    name="${name//[^-0-9A-Z_a-z]/}"
+    if [ "$name" != "" ] &&
+       [ "$name" != "${name#[0-9A-Za-z]}" ] &&
+       [ "$name" != "${name%[0-9A-Za-z]}" ] &&
+       [ "$name" == "${name//-_/}" ] &&
+       [ "$name" == "${name//_-/}" ] ; then
+         if [[ $name == *"_"* ]]; then
+             echo "valid_hostname::Error"
+             return 1
+         else
+             echo "valid_hostname::OK"
+             return 0
+         fi
+    else
+        echo "valid_hostname::Error"
+        return 1
+    fi
+}
+
+function valid_hostname_test(){
+    valid_hostname abc_123
+    if [[ $? -eq 0 ]]; then
+       echo  valid_hostname_test::OK
+    else
+        echo valid_hostname_test::Error
+    fi
+
+    valid_hostname "abc-123"
+    if [[ $? -eq 0 ]]; then
+        echo valid_hostname_test::OK
+    else
+        echo valid_hostname_test::Error
+    fi
+
+}
+
 
 # Function: removehost
 # Usage:
@@ -51,6 +121,7 @@ function removehost() {
 
 # Function: addhost
 # Usage:
+#   . ./ip_utility.sh
 #   addhost vm4 10.109.62.233
 # Return:
 #   0: success
