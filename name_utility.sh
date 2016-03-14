@@ -8,11 +8,11 @@ ETC_HOSTS=/etc/hosts
 
 # Function: changehostname
 # Usage
-#    changehostname vm2_test
+#    change_hostname vm2_test
 # Return
 #    0: Success
 #    1: Fail
-function changehostname() {
+function change_hostname() {
     local hostname_file=/etc/hostname
     local hosts_file=/etc/hosts
     local newhostname=$1
