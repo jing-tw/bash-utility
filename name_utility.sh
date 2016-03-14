@@ -119,6 +119,27 @@ function remove_host() {
     fi
 }
 
+# Function: remove_host_array
+# Usage:
+#    HostnameArray=(vm1 vm2 vm3)
+#    remove_host_array $HostnameArray
+# Return
+#    0: Success
+#    1: Fail
+function remove_host_array(){
+    HostnameArray=$1
+    for (( i=0; i<${#HostnameArray[@]}; i++)); do
+       echo ${HostnameArray[i]}  
+       remove_host ${HostnameArray[i]} 
+    done
+}
+
+function remove_host_array_test(){
+    HostnameArray=(vm1 vm2 vm3)
+    remove_host_array $HostnameArray
+}
+ 
+
 function add_host_array(){
     HostNameArray=$1
     IPArray=$2
