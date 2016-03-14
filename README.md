@@ -24,23 +24,27 @@ ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);change_host
 ``` 
 
 ## Name Resolving (/etc/hosts)
-* Local Add Host
+* Local Host
 ``` bash
  source name_utility.sh; source ip_utility.sh
- add_host vm 192.168.62.183
-```
-* Remote Add Host
-``` bash    
-ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);add_host vm1 192.168.62.183"
+ add_host vm2 192.168.62.183    # Add host
+ remote_host vm2    # Remove host
 ```
 
-* Remote Add Host (Array)
+* Remote Host
+``` bash    
+ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);add_host vm1 192.168.62.183"  # Add host
+ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);remove_host vm1 192.168.62.183"  # Remove host
+```
+
+* Remote Host (Array)
 ``` bash
 source name_utility.sh; source ip_utility.sh
 HostNameArray=(vm1 vm2 vm3)
 IPArray=("10.109.62.118" "10.109.62.124" "10.109.62.138")
 
-add_host_array $HostNameArray $IPArray
+add_host_array $HostNameArray $IPArray   # Add host
+remove_host_array $HostNameArra    # Remove host
 ```
 
 ### Puppet Maseter Ready
