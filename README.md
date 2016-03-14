@@ -15,6 +15,7 @@
     - change_hostname abc
 2. Remote Change Hostname
     - ssh -t ubuntu@10.109.62.118 "$(< ip_utility.sh);$(< name_utility.sh);changehostname abc"
+
 ### Puppet Maseter Ready
 1. source puppet_utility.sh
 2. puppet_master_ready
