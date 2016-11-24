@@ -3,30 +3,52 @@ git_global_user_email=mqjing@gmail.com
 g_http_proxy=http://10.110.15.60:8080
 g_https_proxy=https://10.110.15.60:8080
 
-sudo locale-gen en_US en_US.UTF-8 zh_TW zh_TW.UTF-8
-sudo dpkg-reconfigure locales
 
-# Usage:
-# . ./proxy_utility.sh
-# all_proxy
-# Test:
-#   apt-get update
-#   wget http://www.kimo.com.tw
-function all_proxy(){
-    apt_proxy
-    wget_proxy
-    git_proxy
+function npm_proxy() {
+    bResult=$(check_package npm)
+    
+    if [ "$bResult" == '0' ]; then
+        npm config set https-proxy $g_http_proxy
+	echo "npm: Proxy Installed"
+    else
+        echo "npm: Not installed"
+    fi
+    
 }
 
-# Usage:
-#  . ./proxy_utility.sh
-#  no_proxy
-# Test:
-#  apt-get update
-function no_proxy(){
-    apt_noproxy
-    wget_noproxy
-    git_noproxy
+function npm_noproxy() {
+    # npm config rm proxy
+    bResult=$(check_package npm)
+    #  echo "npm_proxy::bResult = " $bResult
+    
+    if [ $bResult == '0' ]; then
+        echo "npm: Got it"
+        npm config rm proxy
+    else
+        echo "npm: No installed"
+    fi
+}
+
+
+function docker_proxy() {
+    local file=/etc/default/docker
+    sudo sed -i 's#^.*\bhttp_proxy\b.*$#http_proxy=http://10.110.15.60:8080#g' $file
+   
+    # restart the service
+    sudo service docker restart
+
+    echo "Docker Proxy: setup ok"
+}
+
+function docker_noproxy() {
+    echo "docker proxy: removed"
+    local file='/etc/default/docker'
+    sudo sed -i '/http_proxy/s/^/#/g' $file 
+
+    # restart the service
+    sudo service docker restart
+    echo "docker proxy: removed"
+
 }
 
 # Usage:
@@ -151,6 +173,18 @@ function git_install(){
     fi
 }
 
+# Usage: 
+# check_package npm
+function check_package(){
+    local package=$1
+    sudo dpkg -l $package > /dev/null 2>&1
+    if [ $? == '0' ]; then
+        echo '0'
+    else
+        echo '1'
+    fi
+}
+
 function git_proxy(){
     git_install
 
@@ -172,4 +206,31 @@ function git_noproxy(){
 function git_status(){
     git config --global --get http.proxy
     git config --global --get https.proxy
+}
+
+# Usage:
+# . ./proxy_utility.sh
+# all_proxy
+# Test:
+#   apt-get update
+#   wget http://www.kimo.com.tw
+function all_proxy(){
+    apt_proxy
+    wget_proxy
+    git_proxy
+    docker_proxy
+    npm_proxy
+}
+
+# Usage:
+#  . ./proxy_utility.sh
+#  no_proxy
+# Test:
+#  apt-get update
+function no_proxy(){
+    apt_noproxy
+    wget_noproxy
+    git_noproxy
+    docker_noproxy
+    npm_noproxy
 }
