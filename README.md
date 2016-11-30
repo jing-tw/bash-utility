@@ -1,5 +1,8 @@
 # bash-utility
 
+### Quick
+. ./run_proxy.sh
+
 ### Setup Proxy
 * Local Host Proxy Setup
 ``` bash

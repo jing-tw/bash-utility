@@ -35,9 +35,8 @@ function docker_proxy() {
     sudo sed -i 's#^.*\bhttp_proxy\b.*$#http_proxy=http://10.110.15.60:8080#g' $file
    
     # restart the service
-    sudo service docker restart
-
-    echo "Docker Proxy: setup ok"
+    echo "Please restart the docker daemon by following command"
+    echo sudo service docker restart
 }
 
 function docker_noproxy() {
@@ -45,10 +44,8 @@ function docker_noproxy() {
     local file='/etc/default/docker'
     sudo sed -i '/http_proxy/s/^/#/g' $file 
 
-    # restart the service
-    sudo service docker restart
-    echo "docker proxy: removed"
-
+    echo Please restart the docker service
+    echo sudo service docker restart
 }
 
 # Usage:
@@ -218,8 +215,8 @@ function all_proxy(){
     apt_proxy
     wget_proxy
     git_proxy
-    docker_proxy
     npm_proxy
+    docker_proxy
 }
 
 # Usage:
@@ -231,6 +228,6 @@ function no_proxy(){
     apt_noproxy
     wget_noproxy
     git_noproxy
-    docker_noproxy
     npm_noproxy
+    docker_noproxy
 }
